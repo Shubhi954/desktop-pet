@@ -80,7 +80,6 @@ class RECT(ctypes.Structure):
 def get_work_area():
     rect = RECT()
 
-    # SPI_GETWORKAREA returns the screen area above the taskbar.
     ctypes.windll.user32.SystemParametersInfoW(
         0x0030,
         0,
@@ -97,13 +96,11 @@ SCREEN_LEFT = work_area.left
 SCREEN_RIGHT = work_area.right
 TASKBAR_TOP = work_area.bottom
 
-# In the original 300×300 sprites, the paws were aligned at y=255.
-# Convert that baseline to the current PET_SIZE.
 SPRITE_BASELINE = round(255 * PET_SIZE / 300)
 
 x = SCREEN_LEFT + 20
 
-# Place the paws directly on the taskbar's upper edge.
+#paws directly on the taskbar's upper edge.
 ground_y = TASKBAR_TOP - SPRITE_BASELINE
 
 
@@ -182,11 +179,7 @@ def close_pet(_event=None):
 pet.bind("<Button-1>", pet_clicked)
 pet.bind("<B3-Motion>", drag_pet)
 app.bind_all("<Escape>", close_pet)
-
-# Give the borderless window keyboard focus after it appears.
 app.after(200, lambda: (app.lift(), app.focus_force()))
-
-# Reliable backup: double-right-click the kitty to close.
 pet.bind("<Double-Button-3>", close_pet)
 
 show_current_frame()
